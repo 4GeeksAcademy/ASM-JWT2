@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer"
 
 export const Navbar = () => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const { store, dispatch } = useGlobalReducer();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const token = sessionStorage.getItem("token");
-		setIsAuthenticated(!!token);
-	}, []);
 
 	const handleLogout = () => {
-		sessionStorage.removeItem("token");
-		sessionStorage.removeItem("user");
-		setIsAuthenticated(false);
+		dispatch({ type: "logout" });
 		navigate("/login");
 	};
 
@@ -35,7 +30,7 @@ export const Navbar = () => {
 
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav ms-auto">
-						{isAuthenticated ? (
+						{store.auth.isAuthenticated ? (
 							<>
 								<li className="nav-item">
 									<Link to="/private" className="nav-link">

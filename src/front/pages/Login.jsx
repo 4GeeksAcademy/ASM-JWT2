@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 const Login = () => {
+    const { dispatch } = useGlobalReducer();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -24,13 +26,17 @@ const Login = () => {
 
             if (response.status === 200) {
 
-                sessionStorage.setItem("token", data.token);
-
-                sessionStorage.setItem("user", JSON.stringify({
-                    id: data.user_id,
-                    email: data.email,
-                    username: data.username
-                }));
+                dispatch({
+                    type: "login",
+                    payload: {
+                        token: data.token,
+                        user: {
+                            id: data.user_id,
+                            email: data.email,
+                            username: data.username
+                        }
+                    }
+                });
                 navigate("/private")
             }
             else {
