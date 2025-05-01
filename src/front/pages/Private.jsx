@@ -19,7 +19,7 @@ const Private = () => {
         // Verificamos la validez del token
         const verifyToken = async () => {
             try {
-                const response = await fetch(process.env.BACKEND_URL + "/api/protected", {
+                const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
